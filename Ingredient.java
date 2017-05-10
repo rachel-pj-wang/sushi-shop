@@ -7,14 +7,6 @@ public class Ingredient extends Projectile {
     protected double pinParentX, pinParentY;
     protected String ingredient;
     // wip i dont know what im doing
-    protected HashMap<String, Image> ingredients =
-    protected final static Image[] INGREDIENT_SPRITES = new Image[] {
-        new Image("Assets/Rice.png")
-        new Image("Assets/Rice.png")
-        new Image("Assets/Rice.png")
-        new Image("Assets/Rice.png")
-        new Image("Assets/Rice.png")
-    };
     protected final static String[] INGREDIENT_NAMES = new String[] {
         "RICE",
         "FISH1",
@@ -25,7 +17,7 @@ public class Ingredient extends Projectile {
 
     public Ingredient(double x, double y) {
         super(x, y);
-
+        
     }
 
     public void pinTo(Entity entity) {

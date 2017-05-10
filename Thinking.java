@@ -2,7 +2,7 @@ import javafx.scene.image.Image;
 public class Thinking extends Entity {
     public Thinking(double x, double y) {
         super(x, y);
-        this.sprite = new Image("thinking.png");
+        this.sprite = SpriteContainer.sprite_thinking;
         System.out.println(this.toString());
     }
     @Override

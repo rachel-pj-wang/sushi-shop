@@ -12,12 +12,13 @@ public class SushiShop extends Application {
 	private double nextWaveNum;
 	private final int WINDOW_WIDTH = 800;
 	private final int WINDOW_HEIGHT = 600;
-
+	
 	public static void main(String[] args) {
 		launch(args);
  	}
 
 	public void start(Stage stage) {
+		Entity.setGame(this);
 		this.entities = new ArrayList<Entity>();
 		this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
 		stage.setTitle("SushiShop");
@@ -39,7 +40,6 @@ public class SushiShop extends Application {
 				double deltaTime = (currentNanoTime - previousTime) / 1e9; 	// time since last frame as a fraction of a second
 				for (Entity e : entities) {
 					if (deltaTime < 1) {
-						//e._updateHitbox(); // no seriously dont call this anywhere else
 						e.update(deltaTime);
 					}
 				}
@@ -71,7 +71,10 @@ public class SushiShop extends Application {
 		//timeRemaining = 60;
 		timeUntilNextSpawn = 5;
 		nextWaveNum = 1;
-		this.createInstance(new Thinking(0, 0));
+		new Thinking(0, 0);
+		new Thinking(0, 100);
+		new Thinking(0, 200);
+		new Thinking(0, 300);
 	}
 
 	// private void handleSpawning(double deltaTime) {
@@ -103,7 +106,7 @@ public class SushiShop extends Application {
 	// 		}
 	// 	}
 	// }
-	public void createInstance(Entity entity) {
+	public void addEntity(Entity entity) {
 		this.entities.add(entity);
 	}
 }
