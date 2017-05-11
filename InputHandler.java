@@ -13,7 +13,7 @@ public class InputHandler {
                 System.out.println("I DETECTED A KEY!");
                 // only add once... prevent duplicates
                 if (!pressedKeys.contains(code))
-                pressedKeys.add(code);
+                    pressedKeys.add(code);
             }
         });
         randomScene.setOnKeyReleased(new EventHandler<KeyEvent>() {

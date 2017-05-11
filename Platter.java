@@ -1,8 +1,6 @@
 public class Platter extends Entity {
     public Ingredient[] slots;
-
     public Platter(double x, double y, Ingredient[] slots){
-        //super("",new Sprite("Assets/Platter.png"));  // will update with jason's method
         super(x, y);
         if(slots != null) {
             this.slots = slots;

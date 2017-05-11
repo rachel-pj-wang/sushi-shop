@@ -5,19 +5,21 @@ import javafx.geometry.Point2D;
 public class Ingredient extends Projectile {
     protected Entity pinParent;
     protected double pinParentX, pinParentY;
-    protected String ingredient;
+    protected int ingredientId;
     // wip i dont know what im doing
-    protected final static String[] INGREDIENT_NAMES = new String[] {
-        "RICE",
-        "FISH1",
-        "FISH2",
-        "FISH3",
-        "FISH4"
-    };
+    protected final static String[] INGREDIENT_NAMES = new String[] {"RICE", "FISH1", "FISH2", "FISH3", "FISH4"};
+
+    protected enum Ingredients {
+        RICE, SALMON, ROACH
+    }
 
     public Ingredient(double x, double y) {
         super(x, y);
-
+        this.ingredientId = (int)(Math.random()*Ingredient.INGREDIENT_NAMES.length);
+        switch (this.ingredientId) {
+            case Ingredients.RICE:
+                this.sprite = SpriteContainer.sprite_rice
+        }
     }
 
     public void pinTo(Entity entity) {
