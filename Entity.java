@@ -35,7 +35,7 @@ public abstract class Entity {
     public double getY() { return this.y; }
     public int getXoffet() { return this.xoffet; }
     public int getYoffet() { return this.yoffet; }
-    public boolean getVisible() { return this.visible; }
+    public boolean isVisible() { return this.visible; }
     public void toggleVisible() { this.visible = !this.visible; }
     public Image getSprite() { return this.sprite; }
     public static void setGame(SushiShop game) { Entity.game = game; }

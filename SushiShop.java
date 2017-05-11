@@ -54,7 +54,7 @@ public class SushiShop extends Application {
 				display.clear();
 				double deltaTime = (currentNanoTime - previousTime) / 1e9;
 				for (Entity e : entities) {
-					if (e.getVisible() && deltaTime < 1)
+					if (e.isVisible() && deltaTime < 1)
 						e.render(deltaTime, display.getContext());
 				}
 				previousTime = currentNanoTime;
