@@ -1,21 +1,24 @@
-public PlayerPlatter extends Platter{
+
+public class PlayerPlatter extends Platter{
   private double moveSpeed;
 
-  public PlayerPlatter(){
-
+  public PlayerPlatter(double x, double y, double moveSpeed){
+    super(x,y, null);
+    this.moveSpeed = moveSpeed; 
+    this.sprite = SpriteContainer.sprite_salmon;
   }
 
-  public void update(deltatime){
-      if(INPUT.pressedKeys.contains("LEFT")) {
-        setPosition(x - moveSpeed * deltatime, y);
+  public void update(double deltaTime){
+      if(InputHandler.pressedKeys.contains("LEFT")) {
+        setPosition(x - moveSpeed * deltaTime, y);
       }
-      if(INPUT.pressedKeys.contains("RIGHT")){
+      if(InputHandler.pressedKeys.contains("RIGHT")){
         setPosition(x + moveSpeed * deltaTime, y);
       }
-      if(INPUT.pressedKeys.contains("UP")) {
+      if(InputHandler.pressedKeys.contains("UP")) {
         setPosition(x, y - moveSpeed * deltaTime);
       }
-      if(INPUT.pressedKeys.contains("DOWN")){
+      if(InputHandler.pressedKeys.contains("DOWN")){
         setPosition(x, y + moveSpeed * deltaTime);
       }
   }

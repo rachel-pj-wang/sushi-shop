@@ -12,7 +12,7 @@ public class SushiShop extends Application {
 	private double nextWaveNum;
 	private final int WINDOW_WIDTH = 800;
 	private final int WINDOW_HEIGHT = 600;
-	
+
 	public static void main(String[] args) {
 		launch(args);
  	}
@@ -58,6 +58,7 @@ public class SushiShop extends Application {
 						e.render(deltaTime, display.getContext());
 				}
 				previousTime = currentNanoTime;
+				InputHandler.detectKeyStrokes(display.getScene()); 
 
 				//detectKeyStrokes(display.getScene());
 			}
@@ -71,10 +72,10 @@ public class SushiShop extends Application {
 		//timeRemaining = 60;
 		timeUntilNextSpawn = 5;
 		nextWaveNum = 1;
-		new Thinking(0, 0);
-		new Thinking(0, 100);
-		new Thinking(0, 200);
-		new Thinking(0, 300);
+		new PlayerPlatter(0, 0, 800);
+		//new Thinking(0, 100);
+		//new Thinking(0, 200);
+		//new Thinking(0, 300);
 	}
 
 	// private void handleSpawning(double deltaTime) {

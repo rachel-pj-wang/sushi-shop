@@ -26,6 +26,10 @@ public abstract class Entity {
     public boolean isCollidingWith(Entity other) {
         return (this.x < other.getX() + other.getSprite().getWidth() && this.x + this.sprite.getWidth() > other.getX() && this.y < other.getY() + other.getSprite().getHeight() && this.sprite.getHeight() + this.y > other.getY());
     }
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y; 
+    }
     public String toString() { return String.format("x: %s\ny: %s\nwidth: %s\nheight: %s", this.x, this.y, this.sprite.getWidth(), this.sprite.getHeight()); }
     public double getX() { return this.x; }
     public double getY() { return this.y; }

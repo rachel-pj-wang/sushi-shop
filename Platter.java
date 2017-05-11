@@ -1,19 +1,19 @@
 public class Platter extends Entity {
     public Ingredient[] slots;
 
-    public Platter(double x, double y){
+    public Platter(double x, double y, Ingredient[] slots){
         //super("",new Sprite("Assets/Platter.png"));  // will update with jason's method
         super(x, y);
-        if(prePlacedIngredients != null) {
-            slots = prePlacedIngredients;
-            lineUpFromLeft(slots, 0,0);
+        if(slots != null) {
+            this.slots = slots;
+            lineUpFromLeft(this.slots, 0,0);
         }
     }
 
-    public void lineUpFromLeft(Ingredient[] ingredients, double xOffset, yOffset) {
+    public void lineUpFromLeft(Ingredient[] ingredients, double xOffset, double yOffset) {
         double startX = x + xOffset;
         double startY = y + yOffset;
-        for (Ingredient ingreident : ingredients) {
+        for (Ingredient ingredient : ingredients) {
             ingredient.setPosition(startX, startY);
             ingredient.pinTo(this);
             startX += ingredient.sprite.getWidth();

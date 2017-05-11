@@ -17,26 +17,26 @@ public class Ingredient extends Projectile {
 
     public Ingredient(double x, double y) {
         super(x, y);
-        
+
     }
 
     public void pinTo(Entity entity) {
         setVelocity(0,0);
-        pinnedEntity = entity;
+        pinParent = entity;
     }
 
     @Override
     public void update(double deltaTime) {
-        if(pinnedEntity != null) {
+        if(pinParent != null) {
             //adds the CHANGE IN POSITIONS so that the ingredient follows the parent while retaining its original pinned position
-            setPosition(sprite.getLayoutX() + (pinParent.sprite.getLayoutX() - pinParentX, sprite.getLayoutY() + (pinParent.sprite.getLayoutY() - pinParentY)));
+            setPosition(this.x + (pinParent.x - pinParentX), this.y + (pinParent.y - pinParentY));
             refreshPinParentPos();
             return;
         }
     }
 
     private void refreshPinParentPos() {
-        pinParentX = pinParent.sprite.getLayoutX();
-        pinParentY = pinParent.sprite.getLayoutY();
+        pinParentX = pinParent.x;
+        pinParentY = pinParent.y;
     }
 }
