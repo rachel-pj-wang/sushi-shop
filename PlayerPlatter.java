@@ -5,7 +5,7 @@ public class PlayerPlatter extends Platter{
   public PlayerPlatter(double x, double y, double moveSpeed){
     super(x,y, null);
     this.moveSpeed = moveSpeed; 
-    this.sprite = SpriteContainer.sprite_salmon;
+    this.sprite = Sprites.salmon;
   }
 
   public void update(double deltaTime){
