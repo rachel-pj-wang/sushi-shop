@@ -20,6 +20,12 @@ public abstract class Projectile extends Entity {
         this.y += this.vspeed * deltaTime;
     }
 
+    @Override
+    public void pinTo(Entity entity) {
+        super.pinTo(entity);
+        setVelocity(0,0);
+    }
+
     public void setVelocity(double x, double y) {
         this.hspeed = x;
         this.vspeed = y;

@@ -1,33 +1,36 @@
+import java.util.ArrayList;
+
 public class Platter extends Entity {
-    public Ingredient[] slots;
+    public ArrayList<Ingredient> slots;
     protected int capacity;
-    protected int nextFreeIndex; 
-    public Platter(double x, double y, Ingredient[] slots){
+    protected int nextFreeIndex;
+    public Platter(double x, double y, ArrayList<Ingredient> slots){
         super(x, y);
         this.slots = slots;
-        /*
-        if(this.slots != null && this.slots[0] != null) {  //if the platter was constructed with preset ingredients (ie. the order display)
-            //lineIngredientsFromLeft(0,0);
-            nextFreeIndex = -1; 
-        } else {
-          nextFreeIndex = 0; 
+        this.sprite = Sprites.platter;
+        if(!this.slots.isEmpty()) {  //if the platter was constructed with preset ingredients (ie. the order display)
+            lineIngredientsFromLeft(0,0);
         }
-        
-        
-        capacity = slots.length; 
-        */
     }
 
-    // public void lineIngredientsFromLeft( double xOffset, double yOffset) {
-    //   if (slots != null) {
-    //     double startX = x + xOffset;
-    //     double startY = y + yOffset;
-    //     for (Ingredient ingredient : ingredients) {
-    //         ingredient.setPosition(startX, startY);
-    //         ingredient.pinTo(this);
-    //         startX += ingredient.
-    //     }
-    //   }
-    // }
-  
+    public void place (Ingredient ingredient) {
+      slots.add(ingredient);
+      nextFreeIndex++;
+
+      lineIngredientsFromLeft(0,-20);
+
+      }
+
+    public void lineIngredientsFromLeft(double xOffset, double yOffset) {
+       if (slots != null) {
+         double startX = x + xOffset;
+         double startY = y + yOffset;
+         for (Ingredient ingredient : slots) {
+             ingredient.setPosition(startX, startY);
+             ingredient.pinTo(this);
+             startX += ingredient.sprite.getWidth();
+         }
+       }
+     }
+
 }
