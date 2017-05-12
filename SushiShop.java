@@ -21,12 +21,12 @@ public class SushiShop extends Application {
         Entity.setGame(this);
         this.entities = new ArrayList<Entity>();
         this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
+        InputHandler.detectKeyStrokes(this.display.getScene()); 
         stage.setTitle("SushiShop");
         stage.setScene(display.getScene());
         startGameLoops();
         startGame(stage);
         stage.show();
-       InputHandler.detectKeyStrokes(display.getScene()); 
     }
 
     public void startGameLoops() {
