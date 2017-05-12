@@ -7,8 +7,8 @@ public class Ingredient extends Projectile {
     }
 
     protected IngredientTypes ingredient;
-    public Ingredient(double X, double Y, double xSpeed, double ySpeed) {
-        super(X, Y, xSpeed, ySpeed);
+    public Ingredient(double x, double y, double xSpeed, double ySpeed) {
+        super(x, y, xSpeed, ySpeed);
         this.ingredient = IngredientTypes.getRandom();
         switch (this.ingredient) {
             case SALMON:

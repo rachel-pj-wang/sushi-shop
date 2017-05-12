@@ -11,8 +11,8 @@ public class SushiShop extends Application {
     private AnimationTimer animationTimer;
     private Display display;
 
-    private final int WINDOW_WIDTH = 1000;
-    private final int WINDOW_HEIGHT = 1000;
+    private final int WINDOW_WIDTH = 1280;
+    private final int WINDOW_HEIGHT = 720;
 
     private double timeUntilNextSpawn;
     private double nextWaveNum;
