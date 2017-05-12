@@ -1,20 +1,32 @@
 public class Platter extends Entity {
     public Ingredient[] slots;
+    protected int capacity;
+    protected int nextFreeIndex; 
     public Platter(double x, double y, Ingredient[] slots){
         super(x, y);
-        if(slots != null) {
-            this.slots = slots;
-            lineUpFromLeft(this.slots, 0,0);
+        this.slots = slots;
+        if(this.slots[0] != null) {  //if the platter was constructed with preset ingredients (ie. the order display)
+            lineIngredientsFromLeft(0,0);
+            nextFreeIndex = null; 
+        } else {
+          nextFreeIndex = 0; 
         }
+        
+        
+        capacity = slots.length; 
+        
     }
 
-    public void lineUpFromLeft(Ingredient[] ingredients, double xOffset, double yOffset) {
+    public void lineIngredientsFromLeft( double xOffset, double yOffset) {
+      if (slots != null) {
         double startX = x + xOffset;
         double startY = y + yOffset;
         for (Ingredient ingredient : ingredients) {
             ingredient.setPosition(startX, startY);
             ingredient.pinTo(this);
-            startX += ingredient.sprite.getWidth();
+            startX += ingredient.
         }
+      }
     }
+  
 }

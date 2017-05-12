@@ -1,28 +1,28 @@
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
-import java.util.ArrayList;
 
 public class InputHandler {
-    public static ArrayList<String> pressedKeys = new ArrayList<String>();
-    public static ArrayList<String> detectKeyStrokes(Scene randomScene) {
-        randomScene.setOnKeyPressed( new EventHandler<KeyEvent>() {
+    private final static ArrayList<KeyCode> PRESSED_KEYS = new ArrayList<String>();
+    public static ArrayList<KeyCode> detectKeyStrokes(Scene scene) {
+        scene.setOnKeyPressed( new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
-                String code = e.getCode().toString();
-                System.out.println("I DETECTED A KEY!");
+                System.out.printf("Key pressed: %s", e.getCode().toString());
                 // only add once... prevent duplicates
-                if (!pressedKeys.contains(code))
-                    pressedKeys.add(code);
+                if (!InputHandler.PRESSED_KEYS.contains(e.getCode()))
+                    InputHandler.PRESSED_KEYS.add(e.getCode());
             }
         });
-        randomScene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent e) {
-                System.out.println("I DETECTED A KEY!");
-                String code = e.getCode().toString();
-                pressedKeys.remove(code);
+                System.out.printf("Key released: %s", e.getCode().toString());
+                InputHandler.PRESSED_KEYS.remove(e.getCode());
             }
         });
-        return pressedKeys;
+        return InputHandler.PRESSED_KEYS;
     }
+    public static boolean keyPressed(String key) { return InputHandler.PRESSED_KEYS.contains(KeyCode.getKeycode(key)); }
+    public static boolean keyPressed(KeyCode key) { return InputHandler.PRESSED_KEYS.contains(key); }
 }

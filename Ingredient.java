@@ -1,6 +1,6 @@
 public class Ingredient extends Projectile {
     protected enum IngredientTypes {
-        RICE, SALMON, ROACH, OCTOPUS, TUNA, CUCUMBER, YELLOWTAIL;
+        RICE, SALMON, OCTOPUS, TUNA, CUCUMBER, YELLOWTAIL;
         public static IngredientTypes getRandom() {
             return values()[(int) (Math.random() * values().length)];
         }
@@ -17,9 +17,6 @@ public class Ingredient extends Projectile {
                 break;
             case SALMON:
                 this.sprite = Sprites.salmon;
-                break;
-            case ROACH:
-                this.sprite = Sprites.roach;
                 break;
             case OCTOPUS:
                 this.sprite = Sprites.octopus;
@@ -40,6 +37,26 @@ public class Ingredient extends Projectile {
 
     @Override
     public void update(double deltaTime) {
+        if(pinParent != null) {
+            followParent(); 
+            return;
+        }
         
+        setPosition(x + hspeed, y + vspeed); 
     }
+
+    public void pinTo(Entity entity) {
+        setVelocity(0,0);
+        pinParent = entity;
+    }
+
+    private void followParent() {
+        //adds the CHANGE IN POSITIONS so that the ingredient follows the parent while retaining its original pinned position
+        setPosition(this.x + (pinParent.x - pinParentX), this.y + (pinParent.y - pinParentY));
+        
+        //updates pinParent positions for the next iteration (think deltaTime) 
+        pinParentX = pinParent.x;
+        pinParentY = pinParent.y;
+    }
+
 }
