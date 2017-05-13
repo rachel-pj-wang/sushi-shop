@@ -1,5 +1,5 @@
 public class Ingredient extends Projectile {
-    protected enum IngredientTypes {
+    protected static enum IngredientTypes {
         SALMON, OCTOPUS, TUNA, CUCUMBER, YELLOWTAIL;
         public static IngredientTypes getRandom() {
             return values()[(int) (Math.random() * values().length)];
@@ -9,6 +9,29 @@ public class Ingredient extends Projectile {
     protected IngredientTypes ingredient;
     public Ingredient(double x, double y, double xSpeed, double ySpeed) {
         super(x, y, xSpeed, ySpeed);
+        this.ingredient = IngredientTypes.getRandom();
+        switch (this.ingredient) {
+            case SALMON:
+                this.sprite = Sprites.salmon;
+                break;
+            case OCTOPUS:
+                this.sprite = Sprites.octopus;
+                break;
+            case TUNA:
+                this.sprite = Sprites.tuna;
+                break;
+            case CUCUMBER:
+                this.sprite = Sprites.cucumber;
+                break;
+            case YELLOWTAIL:
+                this.sprite = Sprites.yellowtail;
+                break;
+            default:
+                this.sprite = Sprites.thinking;
+        }
+    }
+    public Ingredient() {
+        super(0, 0, 0, 0);
         this.ingredient = IngredientTypes.getRandom();
         switch (this.ingredient) {
             case SALMON:

@@ -17,7 +17,10 @@ public class SushiShop extends Application {
     private double timeUntilNextSpawn;
     private double nextWaveNum;
 
+    //collisions
     private PlayerPlatter player;
+    private Entity stackingHitBox;
+
     private Platter order;
 
     public static void main(String[] args) {
@@ -33,8 +36,8 @@ public class SushiShop extends Application {
         stage.setScene(display.getScene());
 
         //spawning
-        player = new PlayerPlatter(300, WINDOW_HEIGHT/4, new ArrayList<Ingredient>(), 800);
-
+        player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
+        stackingHitBox = player;
 
         startGameLoops();
         stage.show();
@@ -58,7 +61,7 @@ public class SushiShop extends Application {
                     if (deltaTime < 1) {
                         e.update(deltaTime);
                     }
-                    playerCollisionCheck(e);
+                    stackingCollisionCheck(e);
                 }
                 handleSpawning(deltaTime, 2);
                 previousTime = currentNanoTime;
@@ -83,14 +86,15 @@ public class SushiShop extends Application {
         animationTimer.start();
     }
 
-    private void playerCollisionCheck(Entity entity) {
+    private void stackingCollisionCheck(Entity entity) {
         if(entity != player) {
-          if(entity.isCollidingWith(player)) {
-            if (entity instanceof Ingredient && !player.slots.contains(entity)) {
+          if(entity.isCollidingWith(stackingHitBox)) {
+            if (entity instanceof Ingredient && !entity.isPinned()
+                && !player.slots.contains(entity)) {
               //add ideal platter check later
               player.place((Ingredient)entity);
-
-            } //else if cockroach, game over
+              stackingHitBox = player.slots.get(player.slots.size() - 1);
+            }
           }
         }
     }

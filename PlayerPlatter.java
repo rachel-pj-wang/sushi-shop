@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class PlayerPlatter extends Platter{
     private double moveSpeed;
 
-    public PlayerPlatter(double x, double y, ArrayList<Ingredient> slots, double moveSpeed){
-        super(x,y, slots);
+    public PlayerPlatter(double x, double y, double moveSpeed){
+        super(x,y, 0);
         this.moveSpeed = moveSpeed;
         this.sprite = Sprites.platter;
     }

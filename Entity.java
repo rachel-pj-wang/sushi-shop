@@ -20,6 +20,7 @@ public abstract class Entity {
         this.xoffet = 0;
         this.yoffet = 0;
     }
+
     // override this to run code every frame
     public void update(double deltaTime) { return; }
     // same as update but reserved for drawing and has access to the canvas
@@ -41,6 +42,9 @@ public abstract class Entity {
         pinParentY = pinParent.y;
     }
 
+    public boolean isPinned() {
+      return !(pinParent == null);
+    }
     protected void followParent() { //intended to be run in update only
         //adds the CHANGE IN POSITIONS so that the ingredient follows the parent while retaining its original pinned position
         setPosition(this.x + (pinParent.x - pinParentX), this.y + (pinParent.y - pinParentY));
@@ -49,6 +53,7 @@ public abstract class Entity {
         pinParentX = pinParent.x;
         pinParentY = pinParent.y;
     }
+
     public String toString() { return String.format("x: %s\ny: %s\nwidth: %s\nheight: %s", this.x, this.y, this.sprite.getWidth(), this.sprite.getHeight()); }
     public double getX() { return this.x; }
     public double getY() { return this.y; }
