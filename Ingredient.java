@@ -61,7 +61,6 @@ public class Ingredient extends Projectile {
             followParent();
             return;
         }
-
         setPosition(x + hspeed, y + vspeed);
     }
 
