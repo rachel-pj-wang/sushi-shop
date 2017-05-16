@@ -19,9 +19,11 @@ public class SushiShop extends Application {
 
     //collisions
     private PlayerPlatter player;
-    private Entity stackingHitBox;
+    private Entity topHitBox;
 
     private Platter order;
+
+    private boolean isCorrectOrder;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,10 +36,11 @@ public class SushiShop extends Application {
         InputHandler.detectKeyStrokes(this.display.getScene());
         stage.setTitle("this game is about sushi");
         stage.setScene(display.getScene());
+        isCorrectOrder = true;
 
         //spawning
         player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
-        stackingHitBox = player;
+        topHitBox = player;
 
         startGameLoops();
         stage.show();
@@ -61,7 +64,7 @@ public class SushiShop extends Application {
                     if (deltaTime < 1) {
                         e.update(deltaTime);
                     }
-                    stackingCollisionCheck(e);
+                    topCollisionCheck(e);
                 }
                 handleSpawning(deltaTime, 2);
                 previousTime = currentNanoTime;
@@ -86,17 +89,20 @@ public class SushiShop extends Application {
         animationTimer.start();
     }
 
-    private void stackingCollisionCheck(Entity entity) {
+    private void topCollisionCheck(Entity entity) {
         if(entity != player) {
-          if(entity.isCollidingWith(stackingHitBox)) {
+          if(entity.isCollidingWith(topHitBox)) {
             if (entity instanceof Ingredient && !entity.isPinned()
                 && !player.slots.contains(entity)) {
+              if(!entity.equals(order.slots.get(((Platter)entity).slots.size())))
+                isCorrectOrder = false;
               //add ideal platter check later
               player.place((Ingredient)entity);
-              stackingHitBox = player.slots.get(player.slots.size() - 1);
+              topHitBox = player.slots.get(player.slots.size() - 1);
             }
           }
         }
+        System.out.println(isCorrectOrder); 
     }
 
      private void handleSpawning(double deltaTime, double spawnRate) {

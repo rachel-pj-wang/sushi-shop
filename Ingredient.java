@@ -1,4 +1,4 @@
-public class Ingredient extends Projectile {
+public class Ingredient extends Projectile{
     protected static enum IngredientTypes {
         SALMON, OCTOPUS, TUNA, CUCUMBER, YELLOWTAIL;
         public static IngredientTypes getRandom() {
@@ -54,7 +54,12 @@ public class Ingredient extends Projectile {
         }
     }
 
+    public IngredientTypes getIngredient(){return ingredient;}
 
+    @Override
+    public boolean equals(Object obj){
+       return obj instanceof Ingredient && this.ingredient == ((Ingredient)obj).getIngredient();
+    }
     @Override
     public void update(double deltaTime) {
         if(pinParent != null) {
