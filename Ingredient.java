@@ -56,9 +56,8 @@ public class Ingredient extends Projectile{
 
     public IngredientTypes getIngredient(){return ingredient;}
 
-    @Override
-    public boolean equals(Object obj){
-       return obj instanceof Ingredient && this.ingredient == ((Ingredient)obj).getIngredient();
+    public boolean isSame(Ingredient obj){
+       return this.ingredient == obj.getIngredient();
     }
     @Override
     public void update(double deltaTime) {

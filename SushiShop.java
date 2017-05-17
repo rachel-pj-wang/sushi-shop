@@ -11,15 +11,15 @@ public class SushiShop extends Application {
     private AnimationTimer animationTimer;
     private Display display;
 
-    private final int WINDOW_WIDTH = 1280;
+    private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 720;
 
     private double timeUntilNextSpawn;
     private double nextWaveNum;
 
     //collisions
-    private PlayerPlatter player;
-    private Entity topHitBox;
+    public PlayerPlatter player;
+    public Entity topHitBox;
 
     private Platter order;
 
@@ -41,13 +41,14 @@ public class SushiShop extends Application {
         //spawning
         player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
         topHitBox = player;
+        order =  new Platter(10, 10, 3);
 
         startGameLoops();
         stage.show();
     }
 
     public void startGameLoops() {
-        timeUntilNextSpawn = 5;
+        timeUntilNextSpawn = 1;
         nextWaveNum = 1;
 
         gameTimer = new AnimationTimer() {
@@ -94,15 +95,17 @@ public class SushiShop extends Application {
           if(entity.isCollidingWith(topHitBox)) {
             if (entity instanceof Ingredient && !entity.isPinned()
                 && !player.slots.contains(entity)) {
-              if(!entity.equals(order.slots.get(((Platter)entity).slots.size())))
-                isCorrectOrder = false;
+              Ingredient touchedIngredient = (Ingredient)entity;
               //add ideal platter check later
-              player.place((Ingredient)entity);
+              player.place(touchedIngredient);
+              if(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1))) {
+                isCorrectOrder = false;
+              }
               topHitBox = player.slots.get(player.slots.size() - 1);
             }
           }
         }
-        System.out.println(isCorrectOrder); 
+        System.out.println(isCorrectOrder);
     }
 
      private void handleSpawning(double deltaTime, double spawnRate) {

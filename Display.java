@@ -24,8 +24,6 @@ public class Display {
         orderLabel.setLayoutY(10);
         root.getChildren().add(orderLabel);
 
-        //order instantiation
-        new Platter(10, 10, 3);
     }
     public void clear() {
         this.context.clearRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());

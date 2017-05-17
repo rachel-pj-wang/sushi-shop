@@ -1,9 +1,7 @@
 import java.util.ArrayList;
 
 public class Platter extends Entity {
-    public ArrayList<Ingredient> slots;
-    protected int capacity;
-    protected int nextFreeIndex;
+    public ArrayList<Ingredient> slots; 
     public Platter(double X, double Y, int size){
         super(X, Y);
         this.slots = new ArrayList<Ingredient>();
@@ -18,7 +16,6 @@ public class Platter extends Entity {
 
     public void place (Ingredient ingredient) {
       slots.add(ingredient);
-      nextFreeIndex++;
 
       stackIngredients(0,-20);
 
