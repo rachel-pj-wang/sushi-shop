@@ -8,6 +8,7 @@ public abstract class Entity {
     protected int xoffet; // probably to offset the sprites, probably not needed
     protected int yoffet;
     protected boolean visible = true;
+
     protected static SushiShop game;
 
     protected Entity pinParent;
@@ -25,7 +26,12 @@ public abstract class Entity {
     public void update(double deltaTime) { return; }
     // same as update but reserved for drawing and has access to the canvas
     // draws the sprite if visible by default
-    public void render(double deltaTime, GraphicsContext context) { context.drawImage(this.sprite, (int)Math.round(this.x) + this.xoffet, (int)Math.round(this.y) + this.yoffet); }
+    public void render(double deltaTime, GraphicsContext context) {
+       context.drawImage(this.sprite, (int)Math.round(this.x) + this.xoffet, (int)Math.round(this.y) + this.yoffet);
+       double wiggleRoom = 500;
+        if(x < 0 - sprite.getWidth() - wiggleRoom || x > game.getWinWidth() + wiggleRoom  || y < 0 - sprite.getHeight() - wiggleRoom || y > game.getWinHeight() + wiggleRoom)
+          game.removeEntity(this);
+      }
     // generic aabb collision
     // kinda cheating but reads the image width to check for collisions :^)
     public boolean isCollidingWith(Entity other) {
@@ -52,6 +58,10 @@ public abstract class Entity {
         //updates pinParent positions for the next iteration (think deltaTime)
         pinParentX = pinParent.x;
         pinParentY = pinParent.y;
+    }
+
+    protected void remove() {
+      game.removeEntity(this);
     }
 
     public String toString() { return String.format("x: %s\ny: %s\nwidth: %s\nheight: %s", this.x, this.y, this.sprite.getWidth(), this.sprite.getHeight()); }

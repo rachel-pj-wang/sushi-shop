@@ -10,6 +10,7 @@ public class SushiShop extends Application {
     private AnimationTimer gameTimer;
     private AnimationTimer animationTimer;
     private Display display;
+    private Stage stage;
 
     private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 720;
@@ -24,26 +25,16 @@ public class SushiShop extends Application {
     private Platter order;
 
     private boolean isCorrectOrder;
+    private int score;
 
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage stage) {
-        Entity.setGame(this);
-        this.entities = new ArrayList<Entity>();
-        this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
-        InputHandler.detectKeyStrokes(this.display.getScene());
-        stage.setTitle("this game is about sushi");
-        stage.setScene(display.getScene());
-        isCorrectOrder = true;
+        this.stage = stage;
 
-        //spawning
-        player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
-        topHitBox = player;
-        order =  new Platter(10, 10, 3);
-
-        startGameLoops();
+        initializeVariables();
         stage.show();
     }
 
@@ -52,9 +43,6 @@ public class SushiShop extends Application {
         nextWaveNum = 1;
 
         gameTimer = new AnimationTimer() {
-          //timeRemaining = 60;
-
-
             double previousTime = 0;
             double timeUntilNextSpawn = 2;
             double nextWaveNum = 1;
@@ -69,6 +57,12 @@ public class SushiShop extends Application {
                 }
                 handleSpawning(deltaTime, 2);
                 previousTime = currentNanoTime;
+
+                //placeholder loss handling
+                if(!isCorrectOrder) {
+                  initializeVariables();
+                  score = 0;
+                }
             }
         };
 
@@ -83,12 +77,36 @@ public class SushiShop extends Application {
                         e.render(deltaTime, display.getContext());
 
                 }
+                display.setScoreDisplay(score + ""); 
                 previousTime = currentNanoTime;
             }
         };
         gameTimer.start();
         animationTimer.start();
     }
+
+    private void initializeVariables() {
+      if(gameTimer != null) gameTimer.stop();
+      if(animationTimer != null) animationTimer.stop();
+
+      Entity.setGame(this);
+      this.entities = new ArrayList<Entity>();
+      this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
+      InputHandler.detectKeyStrokes(this.display.getScene());
+
+      isCorrectOrder = true;
+
+      //spawning
+      player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
+      topHitBox = player;
+      order =  new Platter(10, 100, 3);
+
+      startGameLoops();
+
+      stage.setTitle("this game is about sushi");
+      stage.setScene(display.getScene());
+
+      }
 
     private void topCollisionCheck(Entity entity) {
         if(entity != player) {
@@ -98,13 +116,16 @@ public class SushiShop extends Application {
               Ingredient touchedIngredient = (Ingredient)entity;
               //add ideal platter check later
               player.place(touchedIngredient);
-              if(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1))) {
+              if(!(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1)))) {
                 isCorrectOrder = false;
+              }else if (player.slots.size() == order.slots.size()){
+                initializeVariables();
+                score++;
               }
-              topHitBox = player.slots.get(player.slots.size() - 1);
+                topHitBox = player.slots.get(player.slots.size() - 1);
+              }
             }
           }
-        }
         System.out.println(isCorrectOrder);
     }
 
@@ -125,13 +146,18 @@ public class SushiShop extends Application {
         }
      }
 
-    // private void restartGame(Stage stage) {
-    //  animationTimer.stop();
-    //  stage.close();
-    //  startGame(stage);
-    // }
-
     public void addEntity(Entity entity) {
-        this.entities.add(entity);
+      this.entities.add(entity);
     }
+    public void removeEntity(Entity entity) {
+      this.entities.remove(entity);
+    }
+
+    public double getWinWidth() {
+      return WINDOW_WIDTH;
+    }
+    public double getWinHeight() {
+      return WINDOW_HEIGHT;
+    }
+
 }
