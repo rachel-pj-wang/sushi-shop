@@ -1,6 +1,6 @@
 public class Ingredient extends Projectile{
     protected static enum IngredientTypes {
-        SALMON, OCTOPUS, TUNA, CUCUMBER, YELLOWTAIL;
+        SALMON, TUNA, CUCUMBER, YELLOWTAIL,SEAWEED;//RICE
         public static IngredientTypes getRandom() {
             return values()[(int) (Math.random() * values().length)];
         }
@@ -14,9 +14,6 @@ public class Ingredient extends Projectile{
             case SALMON:
                 this.sprite = Sprites.salmon;
                 break;
-            case OCTOPUS:
-                this.sprite = Sprites.octopus;
-                break;
             case TUNA:
                 this.sprite = Sprites.tuna;
                 break;
@@ -26,8 +23,10 @@ public class Ingredient extends Projectile{
             case YELLOWTAIL:
                 this.sprite = Sprites.yellowtail;
                 break;
-            default:
-                this.sprite = Sprites.thinking;
+            case SEAWEED:
+                this.sprite = Sprites.seaweed;
+            // case RICE:
+            //     this.rice = Sprites.rice;
         }
     }
     public Ingredient() {
@@ -37,9 +36,6 @@ public class Ingredient extends Projectile{
             case SALMON:
                 this.sprite = Sprites.salmon;
                 break;
-            case OCTOPUS:
-                this.sprite = Sprites.octopus;
-                break;
             case TUNA:
                 this.sprite = Sprites.tuna;
                 break;
@@ -49,8 +45,9 @@ public class Ingredient extends Projectile{
             case YELLOWTAIL:
                 this.sprite = Sprites.yellowtail;
                 break;
-            default:
-                this.sprite = Sprites.thinking;
+            case SEAWEED:
+                this.sprite = Sprites.seaweed;
+                break;
         }
     }
 
@@ -65,7 +62,19 @@ public class Ingredient extends Projectile{
             followParent();
             return;
         }
-        setPosition(x + hspeed, y + vspeed);
+        setPosition(x + hspeed * deltaTime, y + vspeed * deltaTime);
+    }
+
+    @Override
+    public void onCollision(Entity e)  {
+      super.onCollision(e);
+      if(e instanceof Roach && vspeed >= 0) {
+        if(pinParent instanceof PlayerPlatter)
+            game.loseGame();
+        else if (pinParent == null) {
+            game.destroy(this);
+        }
+      }
     }
 
     @Override
@@ -73,5 +82,4 @@ public class Ingredient extends Projectile{
       super.pinTo(entity);
       setVelocity(0,0);
     }
-
 }

@@ -26,6 +26,17 @@ public abstract class Projectile extends Entity {
         setVelocity(0,0);
     }
 
+    @Override
+    public void onCollision(Entity e)  {
+          if(e instanceof Ingredient) {
+            Ingredient ingredient = (Ingredient)e;
+            if(vspeed > 0 && ingredient.vspeed > 0) // if both ingredients are falling
+              game.destroy(e);
+            else if (ingredient.vspeed < 0)
+              pinTo(ingredient);
+          }
+      }
+
     public void setVelocity(double x, double y) {
         this.hspeed = x;
         this.vspeed = y;

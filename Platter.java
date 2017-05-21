@@ -33,4 +33,15 @@ public class Platter extends Entity {
             }
           }
         }
+
+      public void clearPlatter() {
+        for(Ingredient ingredient : slots)  {
+          game.destroy(ingredient);
+        }
+        slots = new ArrayList<Ingredient>();
+      }
+
+      public void onDestroy() {
+        clearPlatter();
+      }
 }

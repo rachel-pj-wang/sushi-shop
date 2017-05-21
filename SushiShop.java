@@ -1,9 +1,11 @@
 import java.util.ArrayList;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.lang.Math;
+import javafx.scene.input.KeyCode;
 
 public class SushiShop extends Application {
     private ArrayList<Entity> entities;
@@ -26,6 +28,9 @@ public class SushiShop extends Application {
 
     private boolean isCorrectOrder;
     private int score;
+    private int bestScore;
+
+    private double roachSpawnChance;
 
     public static void main(String[] args) {
         launch(args);
@@ -33,8 +38,28 @@ public class SushiShop extends Application {
 
     public void start(Stage stage) {
         this.stage = stage;
+        if(gameTimer != null) gameTimer.stop();
+        if(animationTimer != null) animationTimer.stop();
 
-        initializeVariables();
+        Entity.setGame(this);
+        this.entities = new ArrayList<Entity>();
+        this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
+        InputHandler.detectKeyStrokes(this.display.getScene());
+
+        //spawning
+        order =  new Platter(10, 100, 3);
+        player = new PlayerPlatter(10, WINDOW_HEIGHT - order.sprite.getHeight() - 10, 700, new Rectangle(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+        topHitBox = player;
+
+        isCorrectOrder = true;
+        roachSpawnChance = 0.2;
+
+
+        startGameLoops();
+
+        stage.setTitle("this game is about sushi");
+        stage.setScene(display.getScene());
+
         stage.show();
     }
 
@@ -55,14 +80,24 @@ public class SushiShop extends Application {
                     }
                     topCollisionCheck(e);
                 }
+                checkCollisions();
+
                 handleSpawning(deltaTime, 2);
                 previousTime = currentNanoTime;
 
                 //placeholder loss handling
-                if(!isCorrectOrder) {
-                  initializeVariables();
-                  score = 0;
+                if(!isCorrectOrder) { // losing
+                  loseGame();
                 }
+
+                if(player.x > display.getLineOffSet()) {
+                  startGame();
+                }
+
+                /*if(InputHandler.keyPressed(KeyCode.ESCAPE)){
+                  reset();
+                  gameTimer.stop();
+                }*/ //this is bugged, fix later if someon efeels like it
             }
         };
 
@@ -77,7 +112,9 @@ public class SushiShop extends Application {
                         e.render(deltaTime, display.getContext());
 
                 }
-                display.setScoreDisplay(score + ""); 
+                display.setScoreDisplay("SCORE: " + score);
+                display.setBestScoreDisplay("TOP SCORE: " + bestScore);
+                display.handleStart(deltaTime);
                 previousTime = currentNanoTime;
             }
         };
@@ -85,27 +122,32 @@ public class SushiShop extends Application {
         animationTimer.start();
     }
 
-    private void initializeVariables() {
-      if(gameTimer != null) gameTimer.stop();
-      if(animationTimer != null) animationTimer.stop();
+    public void startGame() {
+      player.setMoveBounds(new Rectangle(display.getLineOffSet(), 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+      display.setPlayMode();
+    }
 
-      Entity.setGame(this);
-      this.entities = new ArrayList<Entity>();
-      this.display = new Display(WINDOW_WIDTH, WINDOW_HEIGHT);
-      InputHandler.detectKeyStrokes(this.display.getScene());
-
+    public void loseGame() {
+      display.setDemoMode();
+      score = 0;
       isCorrectOrder = true;
+      roachSpawnChance = 0.2;
 
-      //spawning
-      player = new PlayerPlatter(300, WINDOW_HEIGHT/4, 800);
+      player.clearPlatter();
+      player.setPosition(10, WINDOW_HEIGHT - order.sprite.getHeight() - 10);
+
       topHitBox = player;
-      order =  new Platter(10, 100, 3);
 
-      startGameLoops();
+    }
 
-      stage.setTitle("this game is about sushi");
-      stage.setScene(display.getScene());
-
+    private void checkCollisions() {
+      for(Entity e1 : entities) {
+        for(Entity e2 : entities) {
+            if (e1 != e2 && e1.isCollidingWith(e2)) {
+                e1.onCollision(e2);
+            }
+          }
+        }
       }
 
     private void topCollisionCheck(Entity entity) {
@@ -114,43 +156,78 @@ public class SushiShop extends Application {
             if (entity instanceof Ingredient && !entity.isPinned()
                 && !player.slots.contains(entity)) {
               Ingredient touchedIngredient = (Ingredient)entity;
-              //add ideal platter check later
               player.place(touchedIngredient);
               if(!(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1)))) {
                 isCorrectOrder = false;
+                return;
               }else if (player.slots.size() == order.slots.size()){
-                initializeVariables();
-                score++;
+                finishPlatter();
+                return;
               }
                 topHitBox = player.slots.get(player.slots.size() - 1);
               }
             }
           }
-        System.out.println(isCorrectOrder);
+    }
+
+    private void finishPlatter() {
+      player.clearPlatter();
+
+      destroy(order);
+      order =  new Platter(10, 100, 3);
+
+      topHitBox = player;
+      score++;
+      display.makeScoreBlack();
+      if(score > bestScore) bestScore = score;
+    }
+
+    public void setPlayerAsTopHitBox() {
+      topHitBox = player;
+    }
+
+    public void killRoachScore() {
+      display.makeScoreBrown();
+      score += 10;
     }
 
      private void handleSpawning(double deltaTime, double spawnRate) {
       timeUntilNextSpawn -= deltaTime;
       if(timeUntilNextSpawn < 0) {
           spawnRandomWave((int)nextWaveNum);
-          if(nextWaveNum < 5)
-            nextWaveNum += 0.25;
+          if(nextWaveNum < 4)
+            nextWaveNum += 0.5;
           timeUntilNextSpawn = spawnRate;
       }
+
+      if(score > 100)  {
+        roachSpawnChance = 0.9;
+      }
+
      }
 
      private void spawnRandomWave(int count)  {
-      double horizontalVariance = 400;
+      double verticalVariance = 400;
       for(int i = 0; i < count; i++) {
-          new Ingredient(Math.random()* WINDOW_WIDTH, 0 - 300 - Math.random() * horizontalVariance, 0, 3);
+          double linePos = display.getLineOffSet();
+          new Ingredient(linePos + Math.random()*(WINDOW_WIDTH - linePos - Sprites.cucumber.getWidth()), -300 - Math.random() * verticalVariance, 0, 300);
         }
-     }
+        if(Math.random() < roachSpawnChance) {
+            new Roach(WINDOW_WIDTH, Math.random()*WINDOW_HEIGHT - Sprites.roach0.getHeight());
+        }
+      }
 
     public void addEntity(Entity entity) {
       this.entities.add(entity);
     }
-    public void removeEntity(Entity entity) {
+    public void destroy(Entity entity) {
+      entity.onDestroy();
       this.entities.remove(entity);
+    }
+
+    public void reset() {
+      stage.close();
+      start(stage);
     }
 
     public double getWinWidth() {

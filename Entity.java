@@ -30,7 +30,7 @@ public abstract class Entity {
        context.drawImage(this.sprite, (int)Math.round(this.x) + this.xoffet, (int)Math.round(this.y) + this.yoffet);
        double wiggleRoom = 500;
         if(x < 0 - sprite.getWidth() - wiggleRoom || x > game.getWinWidth() + wiggleRoom  || y < 0 - sprite.getHeight() - wiggleRoom || y > game.getWinHeight() + wiggleRoom)
-          game.removeEntity(this);
+          game.destroy(this);
       }
     // generic aabb collision
     // kinda cheating but reads the image width to check for collisions :^)
@@ -48,9 +48,16 @@ public abstract class Entity {
         pinParentY = pinParent.y;
     }
 
-    public boolean isPinned() {
-      return !(pinParent == null);
+    public void unPin() {
+      pinParent = null;
+      pinParentX = 0;
+      pinParentY = 0;
     }
+
+    public boolean isPinned() {
+      return pinParent != null;
+    }
+
     protected void followParent() { //intended to be run in update only
         //adds the CHANGE IN POSITIONS so that the ingredient follows the parent while retaining its original pinned position
         setPosition(this.x + (pinParent.x - pinParentX), this.y + (pinParent.y - pinParentY));
@@ -60,8 +67,13 @@ public abstract class Entity {
         pinParentY = pinParent.y;
     }
 
-    protected void remove() {
-      game.removeEntity(this);
+    //to be overridden
+    public void onDestroy() {
+
+    }
+
+    public void onCollision(Entity entity) {
+
     }
 
     public String toString() { return String.format("x: %s\ny: %s\nwidth: %s\nheight: %s", this.x, this.y, this.sprite.getWidth(), this.sprite.getHeight()); }
