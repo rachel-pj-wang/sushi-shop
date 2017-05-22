@@ -24,10 +24,10 @@ public class Platter extends Entity {
                 double startY = y;
                 double startX = x;
                 for (Ingredient ingredient : slots) {
-                        startY -= ingredient.sprite.getHeight();
-                        startX = x + sprite.getWidth()/2 - ingredient.sprite.getWidth()/2;
-                        ingredient.setPosition(startX, startY);
-                        ingredient.pinTo(this);
+                    startY -= ingredient.sprite.getHeight();
+                    startX = x + sprite.getWidth()/2 - ingredient.sprite.getWidth()/2;
+                    ingredient.setPosition(startX, startY);
+                    ingredient.pinTo(this);
                 }
             }
         }
