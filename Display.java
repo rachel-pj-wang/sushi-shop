@@ -110,44 +110,44 @@ public class Display {
     }
 
     public void makeScoreBrown() {
-      scoreDisplay.setTextFill(Color.BROWN);
-      vLine.setStroke(Color.BROWN);
+        scoreDisplay.setTextFill(Color.BROWN);
+        vLine.setStroke(Color.BROWN);
     }
 
     public void makeScoreBlack() {
-      scoreDisplay.setTextFill(Color.BLACK);
-      vLine.setStroke(Color.DARKSALMON);
+        scoreDisplay.setTextFill(Color.BLACK);
+        vLine.setStroke(Color.DARKSALMON);
     }
     public double getLineOffSet() {
-      return lineOffSet;
+        return lineOffSet;
     }
 
     public void setDemoMode() {
-      vLine.setStroke(Color.DARKSALMON);
-      banner.setOpacity(100);
-      scoreDisplay.setTextFill(Color.BLACK);
-      flickerStart = true;
+        vLine.setStroke(Color.DARKSALMON);
+        banner.setOpacity(100);
+        scoreDisplay.setTextFill(Color.BLACK);
+        flickerStart = true;
     }
 
     public void setPlayMode() {
-      if(vLine.getStroke() != Color.BROWN)
-        vLine.setStroke(Color.BLACK);
-      banner.setOpacity(0);
-      flickerStart = false;
-      start.setOpacity(0);
+        if(vLine.getStroke() != Color.BROWN)
+            vLine.setStroke(Color.BLACK);
+        banner.setOpacity(0);
+        flickerStart = false;
+        start.setOpacity(0);
     }
 
     public void handleStart(double deltaTime) {
-      time += deltaTime;
-      if (flickerStart) {
-        if((int)time % 2 == 0) {
-          start.setOpacity(0);
+        time += deltaTime;
+        if (flickerStart) {
+            if((int)time % 2 == 0) {
+              start.setOpacity(0);
+            } else {
+              start.setOpacity(100);
+            }
         } else {
-          start.setOpacity(100);
+            start.setOpacity(0);
         }
-      } else {
-        start.setOpacity(0);
-      }
     }
 
     public void setScoreDisplay(String str) { scoreDisplay.setText(str);}

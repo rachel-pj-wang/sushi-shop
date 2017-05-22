@@ -123,118 +123,112 @@ public class SushiShop extends Application {
     }
 
     public void startGame() {
-      player.setMoveBounds(new Rectangle(display.getLineOffSet(), 0, WINDOW_WIDTH, WINDOW_HEIGHT));
-      display.setPlayMode();
+        player.setMoveBounds(new Rectangle(display.getLineOffSet(), 0, WINDOW_WIDTH, WINDOW_HEIGHT));
+        display.setPlayMode();
     }
 
     public void loseGame() {
-      display.setDemoMode();
-      score = 0;
-      isCorrectOrder = true;
-      roachSpawnChance = 0.2;
-
-      player.clearPlatter();
-      player.setPosition(10, WINDOW_HEIGHT - order.sprite.getHeight() - 10);
-
-      topHitBox = player;
-
+        display.setDemoMode();
+        score = 0;
+        isCorrectOrder = true;
+        roachSpawnChance = 0.2;
+        player.clearPlatter();
+        player.setPosition(10, WINDOW_HEIGHT - order.sprite.getHeight() - 10);
+        topHitBox = player;
     }
 
     private void checkCollisions() {
-      for(Entity e1 : entities) {
-        for(Entity e2 : entities) {
-            if (e1 != e2 && e1.isCollidingWith(e2)) {
-                e1.onCollision(e2);
+        for(Entity e1 : entities) {
+            for(Entity e2 : entities) {
+                if (e1 != e2 && e1.isCollidingWith(e2)) {
+                    e1.onCollision(e2);
+                }
             }
-          }
         }
-      }
+    }
 
     private void topCollisionCheck(Entity entity) {
         if(entity != player) {
-          if(entity.isCollidingWith(topHitBox)) {
-            if (entity instanceof Ingredient && !entity.isPinned()
-                && !player.slots.contains(entity)) {
-              Ingredient touchedIngredient = (Ingredient)entity;
-              player.place(touchedIngredient);
-              if(!(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1)))) {
-                isCorrectOrder = false;
-                return;
-              }else if (player.slots.size() == order.slots.size()){
-                finishPlatter();
-                return;
-              }
-                topHitBox = player.slots.get(player.slots.size() - 1);
-              }
+            if(entity.isCollidingWith(topHitBox)) {
+                if (entity instanceof Ingredient && !entity.isPinned() && !player.slots.contains(entity)) {
+                    Ingredient touchedIngredient = (Ingredient)entity;
+                    player.place(touchedIngredient);
+                    if(!(touchedIngredient.isSame(order.slots.get(player.slots.size() - 1)))) {
+                        isCorrectOrder = false;
+                        return;
+                    }
+                    else if (player.slots.size() == order.slots.size()){
+                        finishPlatter();
+                        return;
+                    }
+                    topHitBox = player.slots.get(player.slots.size() - 1);
+                }
             }
-          }
+        }
     }
 
     private void finishPlatter() {
-      player.clearPlatter();
-
-      destroy(order);
-      order =  new Platter(10, 100, 3);
-
-      topHitBox = player;
-      score++;
-      display.makeScoreBlack();
-      if(score > bestScore) bestScore = score;
+        player.clearPlatter();
+        destroy(order);
+        order =  new Platter(10, 100, 3);
+        topHitBox = player;
+        score++;
+        display.makeScoreBlack();
+        if(score > bestScore)
+            bestScore = score;
     }
 
     public void setPlayerAsTopHitBox() {
-      topHitBox = player;
+        topHitBox = player;
     }
 
     public void killRoachScore() {
-      display.makeScoreBrown();
-      score += 10;
+        display.makeScoreBrown();
+        score += 10;
     }
 
-     private void handleSpawning(double deltaTime, double spawnRate) {
-      timeUntilNextSpawn -= deltaTime;
-      if(timeUntilNextSpawn < 0) {
-          spawnRandomWave((int)nextWaveNum);
-          if(nextWaveNum < 4)
-            nextWaveNum += 0.5;
-          timeUntilNextSpawn = spawnRate;
-      }
+    private void handleSpawning(double deltaTime, double spawnRate) {
+        timeUntilNextSpawn -= deltaTime;
+        if(timeUntilNextSpawn < 0) {
+            spawnRandomWave((int)nextWaveNum);
+            if(nextWaveNum < 4)
+                nextWaveNum += 0.5;
+            timeUntilNextSpawn = spawnRate;
+        }
+        if(score > 100)  {
+            roachSpawnChance = 0.9;
+        }
 
-      if(score > 100)  {
-        roachSpawnChance = 0.9;
-      }
+    }
 
-     }
-
-     private void spawnRandomWave(int count)  {
-      double verticalVariance = 400;
-      for(int i = 0; i < count; i++) {
-          double linePos = display.getLineOffSet();
-          new Ingredient(linePos + Math.random()*(WINDOW_WIDTH - linePos - Sprites.cucumber.getWidth()), -300 - Math.random() * verticalVariance, 0, 300);
+    private void spawnRandomWave(int count)  {
+        double verticalVariance = 400;
+        for(int i = 0; i < count; i++) {
+            double linePos = display.getLineOffSet();
+            new Ingredient(linePos + Math.random()*(WINDOW_WIDTH - linePos - Sprites.cucumber.getWidth()), -300 - Math.random() * verticalVariance, 0, 300);
         }
         if(Math.random() < roachSpawnChance) {
             new Roach(WINDOW_WIDTH, Math.random()*WINDOW_HEIGHT - Sprites.roach0.getHeight());
         }
-      }
+    }
 
     public void addEntity(Entity entity) {
-      this.entities.add(entity);
+        this.entities.add(entity);
     }
     public void destroy(Entity entity) {
-      entity.onDestroy();
-      this.entities.remove(entity);
+        entity.onDestroy();
+        this.entities.remove(entity);
     }
 
     public void reset() {
-      stage.close();
-      start(stage);
+        stage.close();
+        start(stage);
     }
 
     public double getWinWidth() {
-      return WINDOW_WIDTH;
+        return WINDOW_WIDTH;
     }
     public double getWinHeight() {
-      return WINDOW_HEIGHT;
+        return WINDOW_HEIGHT;
     }
-
 }

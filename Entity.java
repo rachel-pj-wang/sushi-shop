@@ -27,11 +27,11 @@ public abstract class Entity {
     // same as update but reserved for drawing and has access to the canvas
     // draws the sprite if visible by default
     public void render(double deltaTime, GraphicsContext context) {
-       context.drawImage(this.sprite, (int)Math.round(this.x) + this.xoffet, (int)Math.round(this.y) + this.yoffet);
-       double wiggleRoom = 500;
+        context.drawImage(this.sprite, (int)Math.round(this.x) + this.xoffet, (int)Math.round(this.y) + this.yoffet);
+        double wiggleRoom = 500;
         if(x < 0 - sprite.getWidth() - wiggleRoom || x > game.getWinWidth() + wiggleRoom  || y < 0 - sprite.getHeight() - wiggleRoom || y > game.getWinHeight() + wiggleRoom)
-          game.destroy(this);
-      }
+            game.destroy(this);
+    }
     // generic aabb collision
     // kinda cheating but reads the image width to check for collisions :^)
     public boolean isCollidingWith(Entity other) {
@@ -49,13 +49,13 @@ public abstract class Entity {
     }
 
     public void unPin() {
-      pinParent = null;
-      pinParentX = 0;
-      pinParentY = 0;
+        pinParent = null;
+        pinParentX = 0;
+        pinParentY = 0;
     }
 
     public boolean isPinned() {
-      return pinParent != null;
+        return pinParent != null;
     }
 
     protected void followParent() { //intended to be run in update only

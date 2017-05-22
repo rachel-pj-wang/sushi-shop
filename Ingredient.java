@@ -67,19 +67,18 @@ public class Ingredient extends Projectile{
 
     @Override
     public void onCollision(Entity e)  {
-      super.onCollision(e);
-      if(e instanceof Roach && vspeed >= 0) {
-        if(pinParent instanceof PlayerPlatter)
-            game.loseGame();
-        else if (pinParent == null) {
-            game.destroy(this);
+        super.onCollision(e);
+        if(e instanceof Roach && vspeed >= 0) {
+            if(pinParent instanceof PlayerPlatter)
+                game.loseGame();
+            else if (pinParent == null)
+                game.destroy(this);
         }
-      }
     }
 
     @Override
     public void pinTo(Entity entity) {
-      super.pinTo(entity);
-      setVelocity(0,0);
+        super.pinTo(entity);
+        setVelocity(0,0);
     }
 }

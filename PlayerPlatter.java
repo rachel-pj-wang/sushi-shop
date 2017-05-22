@@ -23,32 +23,31 @@ public class PlayerPlatter extends Platter{
             setPosition(x, y - moveSpeed * deltaTime);
         if (y + sprite.getHeight() < moveBounds.getHeight() && InputHandler.keyPressed(KeyCode.DOWN))
             setPosition(x, y + moveSpeed * deltaTime);
-
         if(slots.size() > 0 && InputHandler.keyPressed(KeyCode.SPACE)) {
-          shoot();
+            shoot();
         }
     }
 
     public void setMoveBounds(Rectangle moveBounds) {
-      this.moveBounds = moveBounds;
+        this.moveBounds = moveBounds;
     }
 
     public void shoot() {
-      game.setPlayerAsTopHitBox();
-      ArrayList<Ingredient> temp = slots;
-      slots = new ArrayList<Ingredient>();
-      for (int i = 0; i < temp.size(); i++) {
-        temp.get(i).unPin();
-        if(i == 0) {
-          temp.get(i).setVelocity(0, -1600);
+        game.setPlayerAsTopHitBox();
+        ArrayList<Ingredient> temp = slots;
+        slots = new ArrayList<Ingredient>();
+        for (int i = 0; i < temp.size(); i++) {
+            temp.get(i).unPin();
+            if(i == 0) {
+                temp.get(i).setVelocity(0, -1600);
+            }
         }
-      }
     }
 
     @Override
     public void onCollision(Entity e) {
-      if(e instanceof Roach) {
-        game.loseGame();
-      }
+        if(e instanceof Roach) {
+            game.loseGame();
+        }
     }
 }
