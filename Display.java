@@ -82,20 +82,26 @@ public class Display {
         ap.setTopAnchor(orderLabel, 10.0);
         ap.setLeftAnchor(orderLabel, 10.0);
 
+        Label instructions = new Label("arrows - move\nspace - fling food");
+        instructions.setFont(new Font(15));
+        ap.getChildren().add(instructions);
+        ap.setBottomAnchor(instructions, 100.0);
+        ap.setLeftAnchor(instructions, 5.0);
+
 
         scoreDisplay  = new Label("SCORE");
         scoreDisplay.setFont(new Font(30));
         scoreDisplay.setTextAlignment(TextAlignment.CENTER);
         ap.getChildren().add(scoreDisplay);
         ap.setBottomAnchor(scoreDisplay, 300.0);
-        ap.setLeftAnchor(scoreDisplay, 10.0);
+        ap.setLeftAnchor(scoreDisplay, 5.0);
 
         bestScoreDisplay = new Label("TOP SCORE: ");
         bestScoreDisplay.setFont(new Font(20));
         bestScoreDisplay.setTextAlignment(TextAlignment.CENTER);
         ap.getChildren().add(bestScoreDisplay);
         ap.setBottomAnchor(bestScoreDisplay, 250.0);
-        ap.setLeftAnchor(bestScoreDisplay, 10.0);
+        ap.setLeftAnchor(bestScoreDisplay, 5.0);
 
         vLine = new Line();
         vLine.setStartX(lineOffSet);
